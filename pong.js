@@ -89,6 +89,7 @@ Ball.prototype.render = function() {
 
 var update = function() {
   player.update();
+  computer.update(ball)
   ball.update(player.paddle, computer.paddle);
 };
 
@@ -117,6 +118,25 @@ Paddle.prototype.move = function(x,y) {
   }else if (this.y + this.height > 600) {
     this.y = 600 - this.height;
     this.y_speed = 0;
+  }
+};
+
+//logic for computer ai
+
+Computer.prototype.update = function() {
+  var y_pos = ball.y;
+  var diff = -((this.paddle.y + (this.paddle.height / 2)) - y_pos);
+  if(diff < 0 && diff < -4) {//max speed down
+    diff = -5;
+  } else if(diff > 0 && diff > 4){ // max speed up
+    diff = 5;
+  }
+  this.paddle.move(0, diff);
+  
+  if(this.paddle.y < 0 ) {
+    this.paddle.y = 0;
+  } else if (this.paddle.y + this.paddle.height  > 600) {
+    this.paddle.y = 600 - this.paddle.height;
   }
 };
 
