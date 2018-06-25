@@ -73,6 +73,8 @@ function Ball(x, y) {
   this.x_speed = -1;
   this.y_speed = 3;
   this.radius = 10;
+  this.score1 = 0;
+  this.score2 = 0;
 }
 
 //render out the Ball
@@ -91,6 +93,8 @@ var update = function() {
   player.update();
   computer.update(ball)
   ball.update(player.paddle, computer.paddle);
+  scorePlayer.update(ball);
+  scoreComputer.update(ball);
 };
 
 // controller function
@@ -132,13 +136,53 @@ Computer.prototype.update = function() {
     diff = 5;
   }
   this.paddle.move(0, diff);
-  
+
   if(this.paddle.y < 0 ) {
     this.paddle.y = 0;
   } else if (this.paddle.y + this.paddle.height  > 600) {
     this.paddle.y = 600 - this.paddle.height;
   }
 };
+
+//scoring
+function Score(x,y, count){
+  this.x = x;
+  this.y = y;
+  this.count = 0
+}
+
+Score.prototype.render = function(){
+  context.font = '20px Arial';
+  context.fillstyle = "#0000";
+  context.fillText('Point: '+this.count, this.x, this.y);
+};
+
+function ScoreComputer(){
+  this.score = new Score(750,100,0);
+};
+
+function ScorePlayer(){
+  this.score = new Score(225,100,0);
+};
+
+ ScorePlayer.prototype.render = function(){
+   this.score.render();
+ };
+
+ ScoreComputer.prototype.render = function(){
+   this.score.render();
+ };
+
+ ScorePlayer.prototype.update = function(ball){
+   this.score.count = ball.score1;
+ };
+
+ ScoreComputer.prototype.update = function(ball){
+   this.score.count = ball.score2;
+ };
+
+
+
 
 //logic for ball collision and movement
 
@@ -159,6 +203,11 @@ Ball.prototype.update = function(paddle1, paddle2) {
   }
 
   if(this.x < 0 || this.x > 1000) {
+    if(this.x < 0){
+      this.score2 +=1;
+    } else if (this.x >1000){
+      this.score1 +=1;
+    }
     this.x_speed = Math.random() >= .5 ? .5*this.radius : -.5*this.radius;
     this.y_speed = 0;
     this.x = canvas.width/2 - this.radius;
@@ -182,6 +231,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
 		}
 };
 
+
+
 var keysDown = {};
 
 window.addEventListener("keydown", function(event) {
@@ -196,6 +247,8 @@ window.addEventListener("keyup", function(event) {
 var player = new Player();
 var computer = new Computer();
 var ball = new Ball(400, 300);
+var scoreComputer = new ScoreComputer();
+var scorePlayer = new ScorePlayer();
 
 var render = function() {
   context.fillStyle = "#0B6623";
@@ -204,4 +257,6 @@ var render = function() {
   computer.render();
   ball.render();
   drawField();
+  scorePlayer.render();
+  scoreComputer.render();
 };
