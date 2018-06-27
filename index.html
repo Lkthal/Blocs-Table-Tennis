@@ -3,12 +3,17 @@
   <head>
     <meta charset="utf-8">
     <title>Bloc Pong</title>
+    <link rel="stylesheet" href="styles/main.css">
   </head>
 
   <body>
-    <canvas id="canvas">
+    <div class='head'>
+    <h1 class='title'>Bloc Table Tennis</h1>
+    <!-- <canvas id="canvas">
       Your browser does not support HTML 5 canvas tag
-    </canvas>
+    </canvas> -->
+    <div id="gameover" onclick="location.reload()" style="visibility:hidden">
+    </div>
     <script type="text/javascript" src="pong.js"></script>
   </body>
 </html>

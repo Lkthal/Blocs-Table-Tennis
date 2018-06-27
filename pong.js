@@ -1,5 +1,7 @@
 var animate = window.requestAnimationFrame ||
-  function(callback) { window.setTimeout(callback, 1000/60) };
+	  window.webkitRequestAnimationFrame ||
+	  window.mozRequestAnimationFrame ||
+	  function(callback) { window.setTimeout(callback, 1000/60) };
 
 var canvas = document.createElement('canvas');
 var width = 1000;
@@ -158,11 +160,11 @@ Score.prototype.render = function(){
 };
 
 function ScoreComputer(){
-  this.score = new Score(750,100,0);
+  this.score = new Score(750,50,0);
 };
 
 function ScorePlayer(){
-  this.score = new Score(225,100,0);
+  this.score = new Score(225,50,0);
 };
 
  ScorePlayer.prototype.render = function(){
@@ -205,8 +207,29 @@ Ball.prototype.update = function(paddle1, paddle2) {
   if(this.x < 0 || this.x > 1000) {
     if(this.x < 0){
       this.score2 +=1;
+        if(this.score2 == 11 ){
+          // document.getElementById("gameover").innerHTML = "Match Set Computer! You Lose!";
+          // document.getElementById("gameover").style.visibility = "visible";
+          // document.getElementById("gameover").style.cursor = "pointer";
+          alert("Computer Win! Game Over You lose! Click button to play for a rematch.");
+          location.reload();
+
+          this.score2 = 0;
+          this.score1 = 0;
+
+        }
     } else if (this.x >1000){
       this.score1 +=1;
+        if(this.score1 == 11 ){
+          // document.getElementById("gameover").innerHTML = "Match Set Player! Click to play again";
+          // document.getElementById("gameover").style.visibility = "visible";
+          // document.getElementById("gameover").style.cursor = "pointer";
+          alert("Player Win! Click button to play again.");
+          location.reload();
+          this.score2 = 0;
+          this.score1 = 0;
+        }
+
     }
     this.x_speed = Math.random() >= .5 ? .5*this.radius : -.5*this.radius;
     this.y_speed = 0;

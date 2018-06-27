@@ -1,0 +1,16 @@
+h1{
+  text-align: center;
+}
+
+canvas {
+
+	margin-left: 22%;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+	border-left: 1px dashed gray;
+	border-right: 1px dashed gray;
+}
+
+body {
+  align-content: center;
+}
